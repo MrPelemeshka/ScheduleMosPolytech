@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+<TextView
+    android:textSize="25sp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/tv_weekday"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    />
+
+    <Button
+        android:id="@+id/bt_mon"
+        android:onClick="Monday"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/monday" />
+
+    <Button
+        android:id="@+id/bt_tue"
+        android:onClick="Tuesday"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tuesday"/>
+
+    <Button
+        android:id="@+id/bt_wed"
+        android:onClick="Wednesday"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/wednesday"/>
+
+    <Button
+        android:id="@+id/bt_thu"
+        android:onClick="Thursday"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/thursday"/>
+
+    <Button
+        android:id="@+id/bt_fri"
+        android:onClick="Friday"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/friday"/>
+
+    <Button
+        android:id="@+id/bt_sat"
+        android:onClick="Saturday"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/saturday"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:id="@+id/test" />
+
+</LinearLayout>

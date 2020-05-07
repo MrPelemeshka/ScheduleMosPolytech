@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MosPolytech</string>
+    <string name="for_now">Ближайшая пара</string>
+    <string name="for_all">Расписание</string>
+    <string name="et_hint">Например: 191–362</string>
+    <string name="tv_label_group">Расписание какой группы вам нужно?</string>
+    <string name="tv_weekday">Выберите день недели</string>
+    <string name="monday">Понедельник</string>
+    <string name="tuesday">Вторник</string>
+    <string name="wednesday">Среда</string>
+    <string name="thursday">Четверг</string>
+    <string name="friday">Пятница</string>
+    <string name="saturday">Суббота</string>
+</resources>
