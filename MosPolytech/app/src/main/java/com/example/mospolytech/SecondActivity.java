@@ -3,9 +3,6 @@ package com.example.mospolytech;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +11,6 @@ import android.widget.TextView;
 import java.io.IOException;
 
 public class SecondActivity extends AppCompatActivity {
-
-    public static final String EXTRA_MESSAGE2 = "dayID";
-    public static final String EXTRA_MESSAGE1 = "groupID";
 
     TextView textView;
     Button mon;

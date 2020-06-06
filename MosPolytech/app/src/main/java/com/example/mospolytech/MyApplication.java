@@ -12,10 +12,6 @@ public class MyApplication extends Application {
     DBHelper mDBHelper;
     public DataAdapter mAdapter;
 
-
-
-
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -28,11 +24,7 @@ public class MyApplication extends Application {
             throw new Error("UnableToUpdateDatabase");
         }
 
-        try {
-            mDb = mDBHelper.getWritableDatabase();
-        } catch (SQLException mSQLException) {
-            throw mSQLException;
-        }
+        mDb = mDBHelper.getWritableDatabase();
 
         mAdapter = new DataAdapter(getApplicationContext(),
                 android.R.layout.simple_list_item_1,mDb);
