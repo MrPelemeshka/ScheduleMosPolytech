@@ -25,7 +25,7 @@ public class HttpHandler {
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("referer", "https://rasp.dmami.ru/site/group?group=191-362&session=0");
+            conn.setRequestProperty("referer", reqUrl);
             // read the response
             InputStream in = new BufferedInputStream(conn.getInputStream());
             response = convertStreamToString(in);

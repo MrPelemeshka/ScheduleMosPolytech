@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.database.Cursor;
@@ -29,6 +31,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     //Объявим переменные компонентов
+    ArrayList<HashMap<String, String>> contactList;
     public final static String EXTRA_MESSAGE = "EXTRA_MESSAGE";
     private String TAG = MainActivity.class.getSimpleName();
     Spinner spinner;
@@ -45,12 +48,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         mDb = ((MyApplication) this.getApplication()).getmDb();
         mA = ((MyApplication) this.getApplication()).getmAdapter();
 
         //Найдем компоненты в XML разметке
         spinner = (Spinner) findViewById(R.id.spinner);
+        contactList = new ArrayList<>();
+        new GetSchedule().execute();
 
         try {
             Cursor c = mDb.rawQuery("SELECT * FROM Groups", null);
@@ -69,15 +73,18 @@ public class MainActivity extends AppCompatActivity {
             spinner.setAdapter(dataAdapter);
         } catch (Exception e) {
         }
-        String group = spinner.getSelectedItem().toString();
-        Cursor cursor1 = mDb.rawQuery("SELECT _id FROM Groups WHERE Name = ?", new String[]{group});
-        cursor1.moveToFirst();
-        final ListView g = (ListView) findViewById(R.id.lv_now);
-        g.setAdapter(mA);
-        ((MyApplication) this.getApplication()).getmAdapter().refill(cursor1.getInt(0), 0, 1);
-        cursor1.close();
+        if (spinner.getSelectedItem() != null) {
+            String group = spinner.getSelectedItem().toString();
+            Cursor cursor1 = mDb.rawQuery("SELECT _id FROM Groups WHERE Name = ?", new String[]{group});
+            cursor1.moveToFirst();
+            final ListView g = (ListView) findViewById(R.id.lv_now);
+            g.setAdapter(mA);
+            ((MyApplication) this.getApplication()).getmAdapter().refill(cursor1.getInt(0), 0, 1);
+            cursor1.close();
+        }
 
     }
+
     public void onDaySchedule(View v) {
         // действия, совершаемые после нажатия на кнопку
         String group = spinner.getSelectedItem().toString();
@@ -88,17 +95,20 @@ public class MainActivity extends AppCompatActivity {
         ((MyApplication) this.getApplication()).getmAdapter().refill(cursor1.getInt(0), 0, 1);
         cursor1.close();
     }
+
     @Override
     public void onResume() {
         // действия, совершаемые после нажатия на кнопку
         super.onResume();
-        String group = spinner.getSelectedItem().toString();
-        Cursor cursor1 = mDb.rawQuery("SELECT _id FROM Groups WHERE Name = ?", new String[]{group});
-        cursor1.moveToFirst();
-        final ListView g = (ListView) findViewById(R.id.lv_now);
-        g.setAdapter(mA);
-        ((MyApplication) this.getApplication()).getmAdapter().refill(cursor1.getInt(0), 0, 1);
-        cursor1.close();
+        if (spinner.getSelectedItem() != null) {
+            String group = spinner.getSelectedItem().toString();
+            Cursor cursor1 = mDb.rawQuery("SELECT _id FROM Groups WHERE Name = ?", new String[]{group});
+            cursor1.moveToFirst();
+            final ListView g = (ListView) findViewById(R.id.lv_now);
+            g.setAdapter(mA);
+            ((MyApplication) this.getApplication()).getmAdapter().refill(cursor1.getInt(0), 0, 1);
+            cursor1.close();
+        }
     }
 
 
@@ -116,30 +126,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class GetContacts extends AsyncTask<Void, Void, Void> {
+    private class GetSchedule extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(MainActivity.this,"Json Data is downloading",Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Json Data is downloading", Toast.LENGTH_LONG).show();
 
         }
 
         @Override
-        protected Void doInBackground(Void... arg0) {
+        public Void doInBackground(Void... voids) {
+            final char dm =(char) 34;
             HttpHandler hhandler = new HttpHandler();
-            mDb.execSQL("DELETE from ");
+            mDb.execSQL("DELETE from Groups");
             // Making a request to url and getting response
-            String url = "https://rasp.dmami.ru/site/group?group=191-362&session=0";
-            String jsonStr = hhandler.makeServiceCall("https://rasp.dmami.ru/groups-list.json");
+            String jsonStr;
+            String url = "https://rasp.dmami.ru/groups-list.json";
+            jsonStr = hhandler.makeServiceCall(url);
+
             Log.e(TAG, "Response from url: " + jsonStr);
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     JSONArray arrGroups = jsonObj.getJSONArray("groups");
                     String strName;
-                    for (int i=0;i<arrGroups.length();i++){
+                    for (int i = 0; i < arrGroups.length(); i++) {
                         strName = arrGroups.getString(i);
-
+                        mDb.execSQL("Insert into Groups(_id,Name) values(" + i + ","+dm + strName + dm+ ")");
                     }
 
                 } catch (final JSONException e) {
@@ -156,10 +169,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-
-
-
-                    Log.e(TAG, "Response from url: " + jsonStr);
+            jsonStr = hhandler.makeServiceCall("https://rasp.dmami.ru/site/group?group=191-362&session=0");
+            Log.e(TAG, "Response from url: " + jsonStr);
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
@@ -186,9 +197,9 @@ public class MainActivity extends AppCompatActivity {
                                 String dt = row.getString("dt");
                                 String title = null;
                                 JSONArray auditories = row.getJSONArray("auditories");
-                                for (int l=0;l<auditories.length();l++){
+                                for (int l = 0; l < auditories.length(); l++) {
                                     JSONObject audi = auditories.getJSONObject(l);
-                                    title=audi.getString("title");
+                                    title = audi.getString("title");
                                 }
                                 String type = row.getString("type");
                                 String week = row.getString("week");
@@ -247,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-
-            return null;
+            return  null;
         }
+    }
 }
