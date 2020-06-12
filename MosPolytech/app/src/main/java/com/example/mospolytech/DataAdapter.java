@@ -33,21 +33,21 @@ public class DataAdapter extends ArrayAdapter<String> {
         String timeText = timeFormat.format(d);
         Cursor cursor1 = null;
         if (mode == 1) {
-            cursor1 = mDb.rawQuery("Select Schedule.Time, Subjects.Name, Schedule._id, strftime('%s',Schedule.Time) From Schedule" +
-                            " INNER JOIN Subjects on Schedule.SubjectID =  Subjects._id  WHERE Schedule.GroupID = ? AND" +
+            cursor1 = mDb.rawQuery("Select Pairs.[Begin], Pairs.[End], Subjects.Name, Schedule._id, strftime('%s',Pairs.[Begin]) From Schedule" +
+                            " INNER JOIN Subjects on Schedule.SubjectID = Subjects._id INNER JOIN Pairs on Schedule.Regnr = Pairs.Regnr and Schedule.Evening = Pairs.Evening WHERE Schedule.GroupID = ? AND" +
                             " Schedule.DayID = ? AND " +
-                            "((strftime('%s',time('now','localtime'))-strftime('%s',Schedule.Time)) between 0 and 5400)" +
+                            "((strftime('%s',time('now','localtime'))-strftime('%s',Pairs.[Begin])) between 0 and 5400)" +
                             " union " +
-                            "Select Schedule.Time,  Subjects.Name, Schedule._id, strftime('%s',Schedule.Time) From Schedule" +
-                            " INNER JOIN Subjects on Schedule.SubjectID =  Subjects._id  WHERE Schedule.GroupID = ? AND" +
-                            " Schedule.DayID = ? AND (strftime('%s',time('now','localtime'))<strftime('%s',Schedule.Time)) " +
-                            "order by strftime('%s',Schedule.Time) asc" +
+                            "Select Pairs.[Begin], Pairs.[End], Subjects.Name, Schedule._id, strftime('%s',Pairs.[Begin]) From Schedule" +
+                            " INNER JOIN Subjects on Schedule.SubjectID =  Subjects._id INNER JOIN Pairs on Schedule.Regnr = Pairs.Regnr and Schedule.Evening = Pairs.Evening WHERE Schedule.GroupID = ? AND" +
+                            " Schedule.DayID = ? AND (strftime('%s',time('now','localtime'))<strftime('%s',Pairs.[Begin])) " +
+                            "order by strftime('%s',Pairs.[Begin]) asc" +
                             " limit 2 ",
                     new String[]{String.valueOf(GroupID), String.valueOf(dayOfWeek), String.valueOf(GroupID), String.valueOf(dayOfWeek)});
         }
         if (mode == 2) {
-            cursor1 = mDb.rawQuery("Select Schedule.Time, Subjects.Name, Schedule._id, strftime('%s',Schedule.Time) From Schedule" +
-                            " INNER JOIN Subjects on Schedule.SubjectID =  Subjects._id  WHERE Schedule.GroupID = ? AND Schedule.DayID = ? order by strftime('%s',Schedule.Time) asc",
+            cursor1 = mDb.rawQuery("Select Pairs.[Begin], Pairs.[End], Subjects.Name, Schedule._id, strftime('%s',Pairs.[Begin]) From Schedule" +
+                            " INNER JOIN Subjects on Schedule.SubjectID =  Subjects._id INNER JOIN Pairs on Schedule.Regnr = Pairs.Regnr and Schedule.Evening = Pairs.Evening WHERE Schedule.GroupID = ? AND Schedule.DayID = ? order by strftime('%s',Pairs.[Begin]) asc",
                     new String[]{String.valueOf(GroupID), String.valueOf(DayID)});
         }
         assert cursor1 != null;
@@ -55,10 +55,10 @@ public class DataAdapter extends ArrayAdapter<String> {
         schedule = "";
         while (!cursor1.isAfterLast()) {
             this.add(cursor1.getString(0));
-            Cursor cursor3 = mDb.rawQuery("select Rooms.Name from ScheduleRoomLink join" +
-                            " Rooms on ScheduleRoomLink.RoomID = Rooms._id where" +
-                            " ScheduleRoomLink.ScheduleID = ? ",
-                    new String[]{cursor1.getString(2)});
+            Cursor cursor3 = mDb.rawQuery("select Rooms.Name from Schedule join" +
+                            " Rooms on Schedule.RoomID = Rooms._id where" +
+                            " Schedule._id = ? ",
+                    new String[]{cursor1.getString(3)});
             cursor3.moveToFirst();
             while (!cursor3.isAfterLast()) {
                 schedule += cursor3.getString(0) + ", ";
@@ -71,10 +71,10 @@ public class DataAdapter extends ArrayAdapter<String> {
             schedule = "";
             this.add(cursor1.getString(1));
 
-            Cursor cursor2 = mDb.rawQuery("select Teachers.Name from ScheduleTeacherLink join" +
-                            " Teachers on ScheduleTeacherLink.TeacherID = Teachers._id where" +
-                            " ScheduleTeacherLink.ScheduleID = ?",
-                    new String[]{cursor1.getString(2)});
+            Cursor cursor2 = mDb.rawQuery("select Teachers.Name from Schedule join" +
+                            " Teachers on Schedule.TeacherID = Teachers._id where" +
+                            " Schedule._id = ?",
+                    new String[]{cursor1.getString(3)});
             cursor2.moveToFirst();
             while (!cursor2.isAfterLast()) {
                 schedule += cursor2.getString(0) + ", ";

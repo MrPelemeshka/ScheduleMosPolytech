@@ -12,7 +12,7 @@
         android:layout_marginBottom="24dp"
         android:text="@string/tv_label_group" />
 
-    <Spinner
+    <AutoCompleteTextView
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="52dp"
@@ -42,6 +42,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
             android:onClick="allSchedule"
+            android:text="@string/for_all" />
+
+        <Button
+            android:id="@+id/btn_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:onClick="GetSchedules"
             android:text="@string/for_all" />
 
     </FrameLayout>
