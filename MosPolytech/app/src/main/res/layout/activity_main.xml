@@ -44,15 +44,8 @@
             android:onClick="allSchedule"
             android:text="@string/for_all" />
 
-        <Button
-            android:id="@+id/btn_update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:onClick="GetSchedules"
-            android:text="@string/for_all" />
-
     </FrameLayout>
+
     <ListView
         android:id="@+id/lv_now"
         android:layout_width="wrap_content"

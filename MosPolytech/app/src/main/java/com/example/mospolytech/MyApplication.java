@@ -1,13 +1,24 @@
 package com.example.mospolytech;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
 public class MyApplication extends Application {
 
+    private static final String TAG = MainActivity.class.getSimpleName();;
     SQLiteDatabase mDb;
     DBHelper mDBHelper;
     public DataAdapter mAdapter;
@@ -37,4 +48,6 @@ public class MyApplication extends Application {
     public DataAdapter getmAdapter() {
         return mAdapter;
     }
+
+
 }
