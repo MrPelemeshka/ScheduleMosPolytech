@@ -1,15 +1,10 @@
 package com.example.mospolytech;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.io.IOException;
-
 public class SecondActivity extends AppCompatActivity {
 
     TextView textView;
@@ -29,7 +24,7 @@ public class SecondActivity extends AppCompatActivity {
 
         // Получаем сообщение из объекта intent
         Intent intent = getIntent();
-        groupID = intent.getIntExtra(MainActivity.EXTRA_MESSAGE,2);
+        groupID = intent.getIntExtra(MainActivity.EXTRA_MESSAGE, 2);
 
         textView = (TextView) findViewById(R.id.test);
         mon = (Button) findViewById(R.id.bt_mon);
@@ -44,39 +39,37 @@ public class SecondActivity extends AppCompatActivity {
 
     public void Monday(View v) {
         Intent intent = new Intent(this, ThirdActivity.class);
-        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID,1,2);
+        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID, 1, 2);
         startActivity(intent);
     }
 
     public void Tuesday(View view) {
         Intent intent = new Intent(this, ThirdActivity.class);
-        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID,2,2);
+        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID, 2, 2);
         startActivity(intent);
     }
 
     public void Wednesday(View view) {
         Intent intent = new Intent(this, ThirdActivity.class);
-        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID,3,2);
+        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID, 3, 2);
         startActivity(intent);
     }
 
     public void Thursday(View view) {
         Intent intent = new Intent(this, ThirdActivity.class);
-        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID,4,2);
+        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID, 4, 2);
         startActivity(intent);
     }
 
     public void Friday(View view) {
         Intent intent = new Intent(this, ThirdActivity.class);
-        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID,5,2);
+        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID, 5, 2);
         startActivity(intent);
     }
 
     public void Saturday(View view) {
         Intent intent = new Intent(this, ThirdActivity.class);
-        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID,6,2);
+        ((MyApplication) this.getApplication()).getmAdapter().refill(groupID, 6, 2);
         startActivity(intent);
     }
-
-
 }

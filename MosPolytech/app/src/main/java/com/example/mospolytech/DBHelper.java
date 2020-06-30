@@ -14,7 +14,7 @@ import java.io.OutputStream;
 public class DBHelper extends SQLiteOpenHelper {
     private static String DB_NAME = "info.db3";
     private static String DB_PATH = "";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 9;
 
     private SQLiteDatabase mDataBase;
     private final Context mContext;
@@ -38,9 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
             File dbFile = new File(DB_PATH + DB_NAME);
             if (dbFile.exists())
                 dbFile.delete();
-
             copyDataBase();
-
             mNeedUpdate = false;
         }
     }
